@@ -111,7 +111,7 @@ export class UserAdminService {
 
   //Private routes
 
-  private async getUserByPhoneNumber(
+  public async getUserByPhoneNumber(
     mobile: string,
   ): Promise<UserEntity | null> {
     return await this.User_Repository.findOne({
