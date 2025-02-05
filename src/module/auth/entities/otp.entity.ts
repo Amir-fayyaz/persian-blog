@@ -1,4 +1,10 @@
-import { Column, Entity, BeforeInsert, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  BeforeInsert,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('otp')
 export class OtpEntity {
@@ -9,6 +15,9 @@ export class OtpEntity {
 
   @Column({ type: 'varchar', nullable: false })
   code: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @Column({ type: 'timestamp', nullable: false })
   expiresAt: Date;
