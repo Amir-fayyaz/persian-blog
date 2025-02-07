@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { config } from 'dotenv';
+import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { OtpEntity } from 'src/module/auth/entities/otp.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 
@@ -15,6 +16,6 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   password: DB_PASSWORD,
   database: DB_DATABASE,
   port: Number(DB_PORT),
-  entities: [UserEntity, OtpEntity],
+  entities: [UserEntity, OtpEntity, AdminEntity],
   synchronize: true,
 };
