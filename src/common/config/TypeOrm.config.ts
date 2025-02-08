@@ -16,6 +16,6 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
   password: DB_PASSWORD,
   database: DB_DATABASE,
   port: Number(DB_PORT),
-  entities: [UserEntity, OtpEntity, AdminEntity],
-  synchronize: true,
+  entities: [AdminEntity, UserEntity, OtpEntity],
+  // synchronize: true,
 };
