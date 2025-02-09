@@ -31,7 +31,7 @@ export class AuthAdminService {
     return password === process.env.ADMIN_PASSWORD;
   }
 
-  private async FindAdminByEmail(email: string): Promise<AdminEntity | null> {
+  public async FindAdminByEmail(email: string): Promise<AdminEntity | null> {
     return await this.Admin_Repository.findOne({
       where: {
         email,
