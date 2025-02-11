@@ -15,8 +15,8 @@ import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../entities/user.entity';
 
 @ApiBearerAuth()
-@ApiTags('users')
-@Controller('users')
+@ApiTags('userAdmin')
+@Controller('users/Admin')
 export class UserAdminController {
   constructor(private readonly UserAdminService: UserAdminService) {}
 
