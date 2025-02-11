@@ -10,10 +10,14 @@ import { AuthClientService } from './auth.client.service';
 import { SignUpClientDto } from './dto/SignUp.client.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SignInClientDto } from './dto/SignIn.client.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth/client')
 export class AuthClientController {
-  constructor(private readonly AuthClientService: AuthClientService) {}
+  constructor(
+    private readonly AuthClientService: AuthClientService,
+    private readonly JwtService: JwtService,
+  ) {}
 
   //GET -
   @Get('getOtp')
@@ -36,5 +40,21 @@ export class AuthClientController {
   @HttpCode(HttpStatus.OK)
   async getOtp(@Body() data: SignUpClientDto) {
     return await this.AuthClientService.CreateOtp(data.mobile);
+  }
+
+  //POST -
+  @Post('SignIn')
+  @HttpCode(HttpStatus.OK)
+  async SignIn(@Body() data: SignInClientDto) {
+    await this.AuthClientService.VerifyOtp(data);
+
+    const user = await this.AuthClientService.getUser(data);
+
+    return {
+      access_token: await this.JwtService.signAsync({
+        id: user.id,
+        mobile: user.mobile,
+      }),
+    };
   }
 }
