@@ -44,6 +44,26 @@ export class AuthClientController {
 
   //POST -
   @Post('SignIn')
+  @ApiOperation({
+    summary: 'for enter to App',
+    description: 'enter phone-number & otp and recive jwt-token',
+  })
+  @ApiBody({
+    description: 'SignIn credentials',
+    type: SignInClientDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'user athenticated successfully & recive jwt-token',
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'No otp for this phone-number',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Wrong otp for this phone-number | Otp has expired',
+  })
   @HttpCode(HttpStatus.OK)
   async SignIn(@Body() data: SignInClientDto) {
     await this.AuthClientService.VerifyOtp(data);
