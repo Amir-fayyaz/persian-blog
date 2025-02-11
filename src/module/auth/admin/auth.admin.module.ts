@@ -6,6 +6,7 @@ import { AuthAdminService } from './auth.admin.service';
 import { JwtModule } from '@nestjs/jwt';
 
 import { config } from 'dotenv';
+import { AuthAdminFactory } from './auth.admin.factory';
 
 config();
 
@@ -20,6 +21,6 @@ config();
     }),
   ],
   controllers: [AuthAdminController],
-  providers: [AuthAdminService],
+  providers: [AuthAdminService, AuthAdminFactory],
 })
 export class AuthAdminModule {}
