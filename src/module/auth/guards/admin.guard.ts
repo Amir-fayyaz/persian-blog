@@ -40,7 +40,6 @@ export class AdminGuard implements CanActivate {
 
       const admin = await this.AuthAdminFactory.getAdminByEmail(paylod.email);
 
-      console.log(admin);
       if (!admin) {
         throw new UnauthorizedException(
           'There is no Admin-acount with this email',
