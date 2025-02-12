@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('Admins')
+@Entity('admins')
 @Unique(['email', 'username'])
 export class AdminEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })

@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { subCategoryEntity } from './subCategory.entity';
 
 @Entity('category')
 export class CategoryEntity {
@@ -19,4 +22,7 @@ export class CategoryEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => subCategoryEntity, (subCategory) => subCategory.category)
+  subCategory: subCategoryEntity[];
 }
