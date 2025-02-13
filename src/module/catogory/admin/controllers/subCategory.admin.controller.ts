@@ -8,10 +8,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { SubCategoryAdminService } from '../services/subCategory.admin.service';
 import { CreateSubCategoryDto } from '../dto/subCategory/createSubCategory.admin.dto';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { UpdateSubCategoryDto } from '../dto/subCategory/updateSubCategory.admin.dto';
 
 @Controller('subcategory/admin')
 export class SubCategoryAdminController {
@@ -143,5 +145,14 @@ export class SubCategoryAdminController {
   @HttpCode(HttpStatus.OK)
   async deleteSubCategory(@Param('id', ParseIntPipe) id: number) {
     return await this.SubCategoryAdminService.DeleteSubCategory(id);
+  }
+
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  async updateSubCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateSubCategoryDto,
+  ) {
+    return await this.SubCategoryAdminService.UpdateSubCategory(id, data);
   }
 }

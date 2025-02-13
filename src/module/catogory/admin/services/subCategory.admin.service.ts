@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateSubCategoryDto } from '../dto/subCategory/createSubCategory.admin.dto';
 import { CategoryAdminService } from './category.admin.service';
 import { IFindCategoryById } from '../../interfaces/findCategory.interface';
+import { UpdateSubCategoryDto } from '../dto/subCategory/updateSubCategory.admin.dto';
 
 @Injectable()
 export class SubCategoryAdminService {
@@ -96,6 +97,24 @@ export class SubCategoryAdminService {
 
     if (!deletedResult.affected)
       throw new NotFoundException('There is no subCategory with this id');
+
+    return id;
+  }
+
+  public async UpdateSubCategory(
+    id: number,
+    data: UpdateSubCategoryDto,
+  ): Promise<number> {
+    await this.CheckTitle(data.title);
+
+    const updateResult = await this.SubCatergory_Repository.update(
+      { id },
+      data,
+    );
+
+    if (!updateResult.affected) {
+      throw new NotFoundException('not found any subcategory with this Id');
+    }
 
     return id;
   }
