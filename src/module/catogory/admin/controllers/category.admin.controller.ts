@@ -172,6 +172,41 @@ export class CategoryAdminController {
 
   //DELETE -
   @Delete(':id')
+  @ApiOperation({
+    summary: 'Delete a category by ID',
+    description:
+      'Deletes a category using its unique ID. If the category is not found, a NotFoundException will be thrown.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'The unique identifier of the category to be deleted.',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Category updated successfully & return id',
+    schema: {
+      example: {
+        id: 1,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Category not found with the provided ID.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - JWT token is missing or invalid.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @HttpCode(HttpStatus.OK)
   async deleteCategory(@Param('id', ParseIntPipe) id: number) {
     return await this.CategoryAdminService.deleteCategory(id);
