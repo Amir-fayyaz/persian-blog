@@ -79,4 +79,11 @@ export class CategoryAdminService {
 
     return { id };
   }
+
+  // methods for export...
+  public async findCategoryById(id: number): Promise<CategoryEntity | null> {
+    return await this.Category_Repository.findOne({
+      where: { id },
+    });
+  }
 }
