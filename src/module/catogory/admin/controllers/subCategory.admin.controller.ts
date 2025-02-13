@@ -105,6 +105,41 @@ export class SubCategoryAdminController {
 
   //DELETE -
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a subcategory by its ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'The  id of the subcategory to delete',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Subcategory successfully deleted',
+    schema: {
+      example: { id: 1 },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Subcategory not found for the given ID',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 404 },
+        message: { type: 'string', example: 'Not found' },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - JWT token is missing or invalid.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @HttpCode(HttpStatus.OK)
   async deleteSubCategory(@Param('id', ParseIntPipe) id: number) {
     return await this.SubCategoryAdminService.DeleteSubCategory(id);
