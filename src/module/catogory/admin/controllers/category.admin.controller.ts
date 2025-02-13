@@ -1,11 +1,16 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
+  Get,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
+
 import { CategoryAdminService } from '../services/category.admin.service';
 import { CreateCategoryDto } from '../dto/category/createCategory.admin.dto';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
@@ -51,5 +56,13 @@ export class CategoryAdminController {
   })
   async CreateNewCategory(@Body() data: CreateCategoryDto) {
     return await this.CategoryAdminService.CreateCategory(data);
+  }
+
+  //GET -
+  @Get()
+  async getCategories(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  ) {
+    return await this.CategoryAdminService.getAllCategories(page);
   }
 }
