@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -16,7 +17,13 @@ import {
 import { CategoryAdminService } from '../services/category.admin.service';
 import { CreateCategoryDto } from '../dto/category/createCategory.admin.dto';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { CategoryEntity } from '../../entities/category.entity';
 import { UpdateCategoryDto } from '../dto/category/updateCategory.admin.dto';
 
@@ -116,8 +123,46 @@ export class CategoryAdminController {
   }
 
   //PUT -
-  @HttpCode(HttpStatus.OK)
   @Put(':id')
+  @ApiOperation({ summary: 'Update a category by ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the category to update',
+    type: Number,
+  })
+  @ApiBody({
+    description: 'The new data for the category to be updated',
+    type: UpdateCategoryDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Category updated successfully & return id',
+    schema: {
+      example: {
+        id: 1,
+      },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Category not found for the given ID',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Title already exists',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - JWT token is missing or invalid.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
+  @HttpCode(HttpStatus.OK)
   async updateCategory(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateCategoryDto,
