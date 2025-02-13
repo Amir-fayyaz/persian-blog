@@ -148,6 +148,42 @@ export class SubCategoryAdminController {
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update a subcategory by its id' })
+  @ApiParam({
+    name: 'id',
+    description: 'The id of the subcategory to update',
+    type: Number,
+  })
+  @ApiBody({
+    description: 'Updated data for the subcategory',
+    type: UpdateSubCategoryDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Subcategory successfully updated',
+    schema: {
+      example: { id: 0 },
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Subcategory not found for the given ID',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict - The title already exists',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - JWT token is missing or invalid.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @HttpCode(HttpStatus.OK)
   async updateSubCategory(
     @Param('id', ParseIntPipe) id: number,
