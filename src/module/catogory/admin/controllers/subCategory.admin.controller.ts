@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { SubCategoryAdminService } from '../services/subCategory.admin.service';
 import { CreateSubCategoryDto } from '../dto/subCategory/createSubCategory.admin.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('subcategory/admin')
 export class SubCategoryAdminController {
@@ -60,7 +60,39 @@ export class SubCategoryAdminController {
     return await this.SubCategoryAdminService.CreateSubCategory(data);
   }
 
+  //GET -
   @Get(':categoryId')
+  @ApiOperation({ summary: 'Get all subcategories for a specific category' })
+  @ApiParam({
+    name: 'categoryId',
+    description: 'category id',
+    type: String,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of subcategories for the specified category',
+    schema: {
+      example: [
+        { id: 'subcat1', title: 'Subcategory 1', categoryId: 'category1' },
+        { id: 'subcat2', title: 'Subcategory 2', categoryId: 'category1' },
+      ],
+    },
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Category not found for the given categoryId',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - JWT token is missing or invalid.',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @HttpCode(HttpStatus.OK)
   async getSubCategoriesByCategoryId(
     @Param('categoryId', ParseIntPipe) categoryId: number,
