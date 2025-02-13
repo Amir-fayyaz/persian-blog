@@ -5,8 +5,10 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -16,6 +18,7 @@ import { CreateCategoryDto } from '../dto/category/createCategory.admin.dto';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CategoryEntity } from '../../entities/category.entity';
+import { UpdateCategoryDto } from '../dto/category/updateCategory.admin.dto';
 
 @Controller('category/admin')
 export class CategoryAdminController {
@@ -110,5 +113,15 @@ export class CategoryAdminController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
     return await this.CategoryAdminService.getAllCategories(page);
+  }
+
+  //PUT -
+  @HttpCode(HttpStatus.OK)
+  @Put(':id')
+  async updateCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateCategoryDto,
+  ) {
+    return await this.CategoryAdminService.UpdateCategory(id, data);
   }
 }

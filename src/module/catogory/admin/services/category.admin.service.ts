@@ -1,9 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from '../../entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from '../dto/category/createCategory.admin.dto';
 import { PaginationTool } from 'src/common/utils/pagination.util';
+import { UpdateCategoryDto } from '../dto/category/updateCategory.admin.dto';
 
 @Injectable()
 export class CategoryAdminService {
@@ -51,5 +56,17 @@ export class CategoryAdminService {
       pages: Math.ceil(totalCount / pagination.take),
       categories,
     };
+  }
+
+  public async UpdateCategory(id: number, data: UpdateCategoryDto) {
+    await this.CheckTitle(data.title);
+
+    const updateResult = await this.Category_Repository.update(id, { ...data });
+
+    if (updateResult.affected === 0) {
+      throw new NotFoundException('There is no category with this id');
+    }
+
+    return id;
   }
 }
