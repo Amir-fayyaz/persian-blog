@@ -1,4 +1,13 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { SubCategoryAdminService } from '../services/subCategory.admin.service';
 import { CreateSubCategoryDto } from '../dto/subCategory/createSubCategory.admin.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -49,5 +58,15 @@ export class SubCategoryAdminController {
   @HttpCode(HttpStatus.CREATED)
   async createSubCategory(@Body() data: CreateSubCategoryDto) {
     return await this.SubCategoryAdminService.CreateSubCategory(data);
+  }
+
+  @Get(':categoryId')
+  @HttpCode(HttpStatus.OK)
+  async getSubCategoriesByCategoryId(
+    @Param('categoryId', ParseIntPipe) categoryId: number,
+  ) {
+    return await this.SubCategoryAdminService.getSubCategoriesByCategoryId(
+      categoryId,
+    );
   }
 }
