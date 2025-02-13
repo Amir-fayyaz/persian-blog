@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -66,15 +67,15 @@ export class SubCategoryAdminController {
   @ApiParam({
     name: 'categoryId',
     description: 'category id',
-    type: String,
+    type: Number,
   })
   @ApiResponse({
     status: 200,
     description: 'List of subcategories for the specified category',
     schema: {
       example: [
-        { id: 'subcat1', title: 'Subcategory 1', categoryId: 'category1' },
-        { id: 'subcat2', title: 'Subcategory 2', categoryId: 'category1' },
+        { id: 1, title: 'Subcategory 1', categoryId: 'category1' },
+        { id: 2, title: 'Subcategory 2', categoryId: 'category1' },
       ],
     },
   })
@@ -100,5 +101,12 @@ export class SubCategoryAdminController {
     return await this.SubCategoryAdminService.getSubCategoriesByCategoryId(
       categoryId,
     );
+  }
+
+  //DELETE -
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async deleteSubCategory(@Param('id', ParseIntPipe) id: number) {
+    return await this.SubCategoryAdminService.DeleteSubCategory(id);
   }
 }

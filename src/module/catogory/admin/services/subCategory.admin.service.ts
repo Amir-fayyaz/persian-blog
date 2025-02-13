@@ -90,4 +90,13 @@ export class SubCategoryAdminService {
 
     return subCategories;
   }
+
+  public async DeleteSubCategory(id: number): Promise<number> {
+    const deletedResult = await this.SubCatergory_Repository.delete({ id });
+
+    if (!deletedResult.affected)
+      throw new NotFoundException('There is no subCategory with this id');
+
+    return id;
+  }
 }
