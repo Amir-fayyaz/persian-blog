@@ -167,6 +167,13 @@ export class CategoryAdminController {
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UpdateCategoryDto,
   ) {
-    return await this.CategoryAdminService.UpdateCategory(id, data);
+    return await this.CategoryAdminService.updateCategory(id, data);
+  }
+
+  //DELETE -
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async deleteCategory(@Param('id', ParseIntPipe) id: number) {
+    return await this.CategoryAdminService.deleteCategory(id);
   }
 }

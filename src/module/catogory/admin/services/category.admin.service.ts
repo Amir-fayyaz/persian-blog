@@ -58,7 +58,7 @@ export class CategoryAdminService {
     };
   }
 
-  public async UpdateCategory(id: number, data: UpdateCategoryDto) {
+  public async updateCategory(id: number, data: UpdateCategoryDto) {
     await this.CheckTitle(data.title);
 
     const updateResult = await this.Category_Repository.update(id, { ...data });
@@ -68,5 +68,15 @@ export class CategoryAdminService {
     }
 
     return id;
+  }
+
+  public async deleteCategory(id: number) {
+    const deletedResult = await this.Category_Repository.delete({ id });
+
+    if (deletedResult.affected === 0) {
+      throw new NotFoundException('There is no category with this id');
+    }
+
+    return { id };
   }
 }
