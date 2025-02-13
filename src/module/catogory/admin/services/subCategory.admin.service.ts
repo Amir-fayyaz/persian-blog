@@ -1,6 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { subCategoryEntity } from '../../entities/subCategory.entity';
+import { Repository } from 'typeorm';
+import { CreateSubCategoryDto } from '../dto/subCategory/createSubCategory.admin.dto';
+import { CategoryAdminService } from './category.admin.service';
+import { IFindCategoryById } from '../../interfaces/findCategory.interface';
 
 @Injectable()
 export class SubCategoryAdminService {
-  constructor() {}
+  private readonly findCategory: IFindCategoryById;
+  constructor(
+    @InjectRepository(subCategoryEntity)
+    private readonly SubCatergory_Repository: Repository<subCategoryEntity>,
+    private readonly categoryAdminService: CategoryAdminService,
+  ) {
+    this.findCategory = this.categoryAdminService;
+  }
+
+  // private method
+  private async CheckTitle(title: string) {
+    const isExistCategory = await this.SubCatergory_Repository.exists({
+      where: {
+        title,
+      },
+    });
+
+    if (isExistCategory) {
+      throw new ConflictException('There is subCategory title already exist');
+    }
+  }
+
+  private async FindCategory(category_id: number) {
+    const category = await this.findCategory.findCategoryById(category_id);
+
+    if (!category)
+      throw new NotFoundException('There is no category with this id');
+
+    return category;
+  }
+
+  //public methods
+  public async CreateSubCategory(
+    data: CreateSubCategoryDto,
+  ): Promise<subCategoryEntity> {
+    await this.CheckTitle(data.title);
+
+    const category = await this.FindCategory(data.category_id);
+
+    const newSubCategory = this.SubCatergory_Repository.create({
+      title: data.title,
+      category: category,
+    });
+
+    return await this.SubCatergory_Repository.save(newSubCategory);
+  }
 }
