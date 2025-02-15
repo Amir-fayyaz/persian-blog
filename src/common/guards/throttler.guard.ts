@@ -16,10 +16,6 @@ export class RateLimit extends ThrottlerGuard {
     const res = context.switchToHttp().getResponse();
 
     const key = this.getTracker(req);
-    const weight = '1';
-    const blockDuration = ttl;
-
-    console.log(key);
 
     const { totalHits } = await this.storageService.increment(key, ttl);
 
