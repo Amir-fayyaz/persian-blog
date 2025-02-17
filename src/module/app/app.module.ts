@@ -5,6 +5,7 @@ import { UserModule } from '../users/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { CategoryModule } from '../catogory/category.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { PostModule } from '../post/post.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     UserModule,
     AuthModule,
     CategoryModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],
