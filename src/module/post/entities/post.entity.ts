@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
 import {
@@ -12,28 +13,36 @@ import {
 
 @Entity('post')
 export class PostEntity {
+  @ApiProperty()
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
+  @ApiProperty()
   @Column({ type: 'text', nullable: false })
   description: string;
 
+  @ApiProperty()
   @Column({ type: 'varchar' })
   thumbnail: string;
 
+  @ApiProperty()
   @Column({ type: 'json' })
   gallery: string[];
 
+  @ApiProperty()
   @Column({ type: 'varchar' })
   slug: string;
 
+  @ApiProperty()
   @Column({ type: 'int', default: 0 })
   views: number;
 
+  @ApiProperty()
   @Column({ type: 'json' })
   tags: string[];
 
   // reloations
+  // @ApiProperty()
   @ManyToOne(() => subCategoryEntity, (subcategory) => subcategory.posts, {
     onDelete: 'CASCADE',
   })
@@ -42,11 +51,14 @@ export class PostEntity {
 
   @ManyToOne(() => AdminEntity, (admin) => admin.posts)
   @JoinColumn({ name: 'author' })
+  // @ApiProperty()
   author: AdminEntity;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
   updatedAt: Date;
 }
