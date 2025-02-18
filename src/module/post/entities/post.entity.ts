@@ -11,7 +11,7 @@ import {
 
 @Entity('post')
 export class PostEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ type: 'text', nullable: false })
@@ -20,22 +20,16 @@ export class PostEntity {
   @Column({ type: 'varchar' })
   thumbnail: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  thumbnailAltText!: string;
-
-  @Column({ type: 'varchar', nullable: true })
-  compressedThumbnail!: string;
-
-  @Column({ type: 'jsonb' })
-  gallery!: string[];
+  @Column({ type: 'json' })
+  gallery: string[];
 
   @Column({ type: 'varchar' })
-  slug!: string;
+  slug: string;
 
   @Column({ type: 'int', default: 0 })
   views: number;
 
-  @Column({ type: 'jsonb', default: [] })
+  @Column({ type: 'json' })
   tags: string[];
 
   // reloations
