@@ -1,7 +1,9 @@
+import { PostEntity } from 'src/module/post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -30,4 +32,8 @@ export class AdminEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  //relations
+  @OneToMany(() => PostEntity, (post) => post.author)
+  posts: PostEntity[];
 }

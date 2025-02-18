@@ -1,3 +1,4 @@
+import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
 import {
   Column,
@@ -38,6 +39,10 @@ export class PostEntity {
   })
   @JoinColumn({ name: 'subcategory' })
   subcategory: subCategoryEntity;
+
+  @ManyToOne(() => AdminEntity, (admin) => admin.posts)
+  @JoinColumn({ name: 'author' })
+  author: AdminEntity;
 
   @CreateDateColumn()
   createdAt: Date;
