@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { PostEntity } from 'src/module/post/entities/post.entity';
 
 @Entity('subcategory')
 export class subCategoryEntity {
@@ -32,4 +34,7 @@ export class subCategoryEntity {
   @ManyToOne(() => CategoryEntity, (category) => category.subCategory)
   @JoinColumn({ name: 'category' })
   category: CategoryEntity;
+
+  @OneToMany(() => PostEntity, (post) => post.subcategory)
+  posts: PostEntity[];
 }
