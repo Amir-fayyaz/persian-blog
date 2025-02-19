@@ -51,6 +51,35 @@ export class PostAdminController {
   }
 
   @Get()
+  @ApiOperation({
+    summary: 'recive all posts with pagination',
+  })
+  @ApiParam({
+    name: 'page',
+    description: 'page for pagination',
+    type: Number,
+    example: 1,
+  })
+  @ApiParam({
+    name: 'sortingBy',
+    required: false,
+    description: 'you can decide to recive new posts or popular posts',
+    enum: PostSorting,
+    example: PostSorting.POPULAR,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'you recive posts succcessfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unathorized',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Validation error',
+  })
+  @HttpCode(HttpStatus.OK)
   async getAllPosts(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('sortingBy', new DefaultValuePipe(PostSorting.NEW))
