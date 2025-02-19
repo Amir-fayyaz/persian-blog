@@ -1,14 +1,17 @@
 import {
   Controller,
+  DefaultValuePipe,
   Get,
   HttpCode,
   HttpStatus,
   Param,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { PostAdminService } from '../services/post.admin.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { PostEntity } from '../../entities/post.entity';
+import { PostSorting } from '../../enums/Post.sorting.enum';
 
 @Controller('api/v1/admin/posts')
 export class PostAdminController {
@@ -45,5 +48,14 @@ export class PostAdminController {
   @HttpCode(HttpStatus.OK)
   async getPostById(@Param('id', ParseIntPipe) id: number) {
     return await this.PostAdminService.findPostById(id);
+  }
+
+  @Get()
+  async getAllPosts(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('sortingBy', new DefaultValuePipe(PostSorting.NEW))
+    sortingBy: PostSorting,
+  ) {
+    return await this.PostAdminService.getPosts(page, sortingBy);
   }
 }
