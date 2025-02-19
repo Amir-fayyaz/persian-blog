@@ -8,22 +8,11 @@ export const MulterOption: MulterOptions = {
   storage: diskStorage({
     destination: (req: Request, file: Express.Multer.File, cb: Function) => {
       const uploadType = req.query.uploadType as string;
-      let path = '';
+      cb(null, `static/uploads/${uploadType}`);
 
-      if (uploadType === 'profile') {
-        path = './uploads/profiles';
-      } else if (uploadType === 'post') {
-        path = './uploads/posts';
-      } else {
-        // پیش‌فرض یا خطا
-        return cb(new Error('Invalid upload type!'), '');
+      if (!fs.existsSync(`static/uploads/${uploadType}`)) {
+        fs.mkdirSync(`static/uploads/${uploadType}`, { recursive: true });
       }
-
-      if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, { recursive: true });
-      }
-
-      cb(null, path);
     },
 
     filename: (req: Request, file: Express.Multer.File, cb: Function) => {
