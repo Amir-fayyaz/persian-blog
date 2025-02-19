@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from '../../entities/post.entity';
 import { Repository } from 'typeorm';
+import { PostSorting } from '../../enums/Post.sorting.enum';
+import { PaginationTool } from 'src/common/utils/pagination.util';
 
 @Injectable()
 export class PostAdminService {
@@ -25,5 +27,29 @@ export class PostAdminService {
     if (!post) throw new NotFoundException('There is no post with this id');
 
     return post;
+  }
+
+  public async getPosts(page: number, Sorting: PostSorting) {
+    const pagination = PaginationTool({ page, take: 20 });
+
+    const queryBuilder = this.Post_Repository.createQueryBuilder('post');
+
+    if (Sorting === PostSorting.NEW)
+      queryBuilder.orderBy('post.createdAt', 'DESC');
+    if (Sorting === PostSorting.POPULAR)
+      queryBuilder.orderBy('post.views', 'DESC');
+
+    const [posts, totalCount] = await queryBuilder
+      .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('post.subcategory', 'subcategory')
+      .leftJoinAndSelect('subcategory.category', 'category')
+      .skip(pagination.skip)
+      .take(pagination.take)
+      .getManyAndCount();
+
+    return {
+      totalPages: Math.ceil(totalCount / pagination.take),
+      posts,
+    };
   }
 }
