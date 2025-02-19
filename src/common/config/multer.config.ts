@@ -8,6 +8,7 @@ export const MulterOption: MulterOptions = {
   storage: diskStorage({
     destination: (req: Request, file: Express.Multer.File, cb: Function) => {
       const uploadType = req.query.uploadType as string;
+
       cb(null, `static/uploads/${uploadType}`);
 
       if (!fs.existsSync(`static/uploads/${uploadType}`)) {
@@ -24,12 +25,20 @@ export const MulterOption: MulterOptions = {
   }),
 
   fileFilter: (req: Request, file: Express.Multer.File, cb: Function) => {
+    //
     const allowedFileTypes: string[] = ['image/jpeg', 'image/png', 'image/jpg'];
 
     if (allowedFileTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
       cb(new BadRequestException('File type not allowed'), false);
+    }
+
+    //
+    const uploadType = req.query.uploadType as string;
+
+    if (uploadType !== 'profile' && uploadType !== 'post') {
+      cb(new BadRequestException('Invalid upload type'), null);
     }
   },
 
