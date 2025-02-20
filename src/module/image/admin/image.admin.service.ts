@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class ImageAdminService {
   constructor() {}
 
-  public async uploadImage() {
-    return 1;
+  public async uploadImage(file: Express.Multer.File) {
+    return file;
   }
 }

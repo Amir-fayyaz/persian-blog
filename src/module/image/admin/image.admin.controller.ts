@@ -20,12 +20,7 @@ export class ImageAdminController {
   @Post()
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(FileInterceptor('image', MulterOption))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Query('uploadType', new DefaultValuePipe(UploadFileType.POST))
-    uploadType: string,
-  ) {
-    console.log(uploadType, file);
-    return await this.ImageService.uploadImage();
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return await this.ImageService.uploadImage(file);
   }
 }
