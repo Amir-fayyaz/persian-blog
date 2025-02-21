@@ -1,8 +1,11 @@
 import {
+  Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -16,12 +19,15 @@ import {
   ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
+import { readFileDto } from './dto/readFile.admin.dto';
+import { Response } from 'express';
 
 @ApiBearerAuth()
 @Controller('api/v1/admin/image')
 export class ImageAdminController {
   constructor(private readonly ImageService: ImageAdminService) {}
 
+  //POST -
   @Post()
   @ApiOperation({
     summary: 'for upload profile/post image',
@@ -48,5 +54,14 @@ export class ImageAdminController {
   @UseInterceptors(FileInterceptor('image', MulterOption))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return await this.ImageService.uploadImage(file);
+  }
+
+  // GET -
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async readFile(@Body() readFileDto: readFileDto, @Res() response: Response) {
+    const file = await this.ImageService.readFile(readFileDto.path);
+
+    response.setHeader('Content-Type', file.mimeType).send(file.Buffer);
   }
 }
