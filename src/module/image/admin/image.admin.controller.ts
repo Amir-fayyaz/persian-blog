@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Query,
   Res,
@@ -21,6 +23,8 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { Response } from 'express';
+import { readFileDto } from './dto/readFile.admin.dto';
+import { DeleteFileDto } from './dto/deleteFile.admin.dto';
 
 @ApiBearerAuth()
 @Controller('api/v1/admin/image')
@@ -67,12 +71,15 @@ export class ImageAdminController {
     description: 'fullPath of image you want to recive',
   })
   @HttpCode(HttpStatus.OK)
-  async readFile(
-    @Query('fullPath') fullPath: string,
-    @Res() response: Response,
-  ) {
-    const file = await this.ImageService.readFile(fullPath);
+  async readFile(@Body() readFileDto: readFileDto, @Res() response: Response) {
+    const file = await this.ImageService.readFile(readFileDto.path);
 
     response.setHeader('Content-Type', file.mimeType).send(file.Buffer);
+  }
+
+  @Delete()
+  @HttpCode(HttpStatus.OK)
+  async deleteFile(@Body() deleteFileDto: DeleteFileDto) {
+    return await this.ImageService.deleteFile(deleteFileDto.path);
   }
 }
