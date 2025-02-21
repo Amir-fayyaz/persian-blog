@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { promises as fs } from 'fs';
 import * as mime from 'mime-types';
@@ -21,5 +25,15 @@ export class ImageAdminService {
     const mimeType = mime.lookup(path) || 'application/octet-stream';
 
     return { Buffer, mimeType };
+  }
+
+  public async deleteFile(path: string) {
+    try {
+      await fs.unlink(path);
+
+      return true;
+    } catch (error) {
+      throw new NotFoundException('File not found');
+    }
   }
 }
