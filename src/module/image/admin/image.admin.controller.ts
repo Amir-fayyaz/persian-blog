@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   Res,
   UploadedFile,
   UseInterceptors,
@@ -19,7 +20,6 @@ import {
   ApiQuery,
   ApiResponse,
 } from '@nestjs/swagger';
-import { readFileDto } from './dto/readFile.admin.dto';
 import { Response } from 'express';
 
 @ApiBearerAuth()
@@ -58,9 +58,20 @@ export class ImageAdminController {
 
   // GET -
   @Get()
+  @ApiOperation({
+    summary: 'for reciving files',
+  })
+  @ApiQuery({
+    name: 'fullPath',
+    type: String,
+    description: 'fullPath of image you want to recive',
+  })
   @HttpCode(HttpStatus.OK)
-  async readFile(@Body() readFileDto: readFileDto, @Res() response: Response) {
-    const file = await this.ImageService.readFile(readFileDto.path);
+  async readFile(
+    @Query('fullPath') fullPath: string,
+    @Res() response: Response,
+  ) {
+    const file = await this.ImageService.readFile(fullPath);
 
     response.setHeader('Content-Type', file.mimeType).send(file.Buffer);
   }
