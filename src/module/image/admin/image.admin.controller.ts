@@ -18,6 +18,7 @@ import { MulterOption } from 'src/common/config/multer.config';
 import { UploadFileType } from '../enums/uploadType.enum';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -65,9 +66,8 @@ export class ImageAdminController {
   @ApiOperation({
     summary: 'for reciving files',
   })
-  @ApiQuery({
-    name: 'fullPath',
-    type: String,
+  @ApiBody({
+    type: readFileDto,
     description: 'fullPath of image you want to recive',
   })
   @HttpCode(HttpStatus.OK)
@@ -78,6 +78,13 @@ export class ImageAdminController {
   }
 
   @Delete()
+  @ApiOperation({
+    summary: 'delete profile/image by path',
+  })
+  @ApiBody({
+    type: DeleteFileDto,
+    description: 'required vaiables',
+  })
   @HttpCode(HttpStatus.OK)
   async deleteFile(@Body() deleteFileDto: DeleteFileDto) {
     return await this.ImageService.deleteFile(deleteFileDto.path);
