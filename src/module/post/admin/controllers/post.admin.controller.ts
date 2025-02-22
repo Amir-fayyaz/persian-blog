@@ -94,7 +94,16 @@ export class PostAdminController {
     return await this.PostAdminService.getPosts(page, sortingBy);
   }
 
+  //DELETE -
   @Delete(':id')
+  @ApiOperation({
+    summary: 'delete post by id',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of post you want to delete',
+  })
+  @HttpCode(HttpStatus.OK)
   async deletePost(
     @Param('id', ParseIntPipe) id: number,
     @Admin() admin: AdminEntity,
