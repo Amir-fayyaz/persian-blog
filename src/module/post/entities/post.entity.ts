@@ -17,6 +17,9 @@ export class PostEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
+  @Column({ type: 'varchar', nullable: false })
+  title: string;
+
   @ApiProperty()
   @Column({ type: 'text', nullable: false })
   description: string;
