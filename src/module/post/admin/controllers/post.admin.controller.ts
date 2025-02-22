@@ -1,18 +1,24 @@
 import {
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostAdminService } from '../services/post.admin.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { PostEntity } from '../../entities/post.entity';
 import { PostSorting } from '../../enums/Post.sorting.enum';
+import { Admin } from 'src/common/decorators/getAdmin.decorator';
+import { AdminEntity } from 'src/module/auth/entities/admin.entity';
+import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 
+@UseGuards(AdminGuard)
 @Controller('api/v1/admin/posts')
 export class PostAdminController {
   constructor(private readonly PostAdminService: PostAdminService) {}
@@ -86,5 +92,13 @@ export class PostAdminController {
     sortingBy: PostSorting,
   ) {
     return await this.PostAdminService.getPosts(page, sortingBy);
+  }
+
+  @Delete(':id')
+  async deletePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Admin() admin: AdminEntity,
+  ) {
+    return await this.PostAdminService.deletePost(id, +admin.id);
   }
 }
