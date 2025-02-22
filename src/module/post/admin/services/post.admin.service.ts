@@ -18,6 +18,22 @@ export class PostAdminService {
   ) {}
 
   //private method
+  private async generateSlug(title: string): Promise<string> {
+    const slug =
+      title.replaceAll(' ', '-') + '-' + Math.random().toString(16).slice(3, 9);
+
+    const isValidSlug = await this.Post_Repository.findOne({
+      where: {
+        slug,
+      },
+    });
+
+    if (isValidSlug) {
+      return await this.generateSlug(title);
+    }
+
+    return slug;
+  }
 
   //public method
 
