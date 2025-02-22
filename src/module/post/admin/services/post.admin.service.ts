@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from '../../entities/post.entity';
 import { Repository } from 'typeorm';
 import { PostSorting } from '../../enums/Post.sorting.enum';
 import { PaginationTool } from 'src/common/utils/pagination.util';
+import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 
 @Injectable()
 export class PostAdminService {
@@ -51,5 +56,28 @@ export class PostAdminService {
       totalPages: Math.ceil(totalCount / pagination.take),
       posts,
     };
+  }
+
+  public async deletePost(postId: number, AdminId: number) {
+    //? Does Post exists ?
+    const post = await this.Post_Repository.findOne({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!post) throw new NotFoundException('There is no post with this id');
+
+    //? this admin is owner of this post ?
+    if (post && post.author.id !== AdminId)
+      throw new ForbiddenException(
+        'Access denied , this post is not related to you',
+      );
+
+    // method for delete PostImages
+
+    await this.Post_Repository.remove(post);
+
+    return post;
   }
 }
