@@ -118,4 +118,12 @@ export class SubCategoryAdminService {
 
     return id;
   }
+
+  public async findSubCategoryById(
+    id: number,
+  ): Promise<subCategoryEntity | null> {
+    return await this.SubCatergory_Repository.findOne({
+      where: { id },
+    });
+  }
 }
