@@ -7,10 +7,30 @@ import { AuthAdminFactory } from 'src/module/auth/admin/auth.admin.factory';
 import { AuthAdminService } from 'src/module/auth/admin/auth.admin.service';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { JwtService } from '@nestjs/jwt';
+import { PostAdminFactory } from './post.admin.factory';
+import { SubCategoryAdminService } from 'src/module/catogory/admin/services/subCategory.admin.service';
+import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
+import { CategoryAdminService } from 'src/module/catogory/admin/services/category.admin.service';
+import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PostEntity, AdminEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      PostEntity,
+      AdminEntity,
+      subCategoryEntity,
+      CategoryEntity,
+    ]),
+  ],
   controllers: [PostAdminController],
-  providers: [PostAdminService, AuthAdminFactory, AuthAdminService, JwtService],
+  providers: [
+    PostAdminService,
+    PostAdminFactory,
+    AuthAdminFactory,
+    AuthAdminService,
+    SubCategoryAdminService,
+    CategoryAdminService,
+    JwtService,
+  ],
 })
 export class PostAdminModule {}
