@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   DefaultValuePipe,
   Delete,
@@ -7,6 +8,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -17,6 +19,7 @@ import { PostSorting } from '../../enums/Post.sorting.enum';
 import { Admin } from 'src/common/decorators/getAdmin.decorator';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
+import { CreatePostDto } from '../dto/create-post.dto';
 
 @UseGuards(AdminGuard)
 @Controller('api/v1/admin/posts')
@@ -109,5 +112,14 @@ export class PostAdminController {
     @Admin() admin: AdminEntity,
   ) {
     return await this.PostAdminService.deletePost(id, +admin.id);
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @Admin() admin: AdminEntity,
+  ) {
+    return await this.PostAdminService.createNewPost(createPostDto, admin);
   }
 }
