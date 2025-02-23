@@ -6,6 +6,7 @@ import { OtpEntity } from 'src/module/auth/entities/otp.entity';
 import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
 import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
 import { PostEntity } from 'src/module/post/entities/post.entity';
+import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 
 config();
@@ -26,6 +27,7 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
     CategoryEntity,
     subCategoryEntity,
     PostEntity,
+    PostReportEntity,
   ],
   synchronize: true,
 };
