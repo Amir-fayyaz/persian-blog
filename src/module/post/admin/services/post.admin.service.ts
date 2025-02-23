@@ -9,12 +9,15 @@ import { Repository } from 'typeorm';
 import { PostSorting } from '../../enums/Post.sorting.enum';
 import { PaginationTool } from 'src/common/utils/pagination.util';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
+import { CreatePostDto } from '../dto/create-post.dto';
+import { PostAdminFactory } from '../post.admin.factory';
 
 @Injectable()
 export class PostAdminService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly Post_Repository: Repository<PostEntity>,
+    private readonly PostAdminFactory: PostAdminFactory,
   ) {}
 
   //private method
@@ -95,5 +98,37 @@ export class PostAdminService {
     await this.Post_Repository.remove(post);
 
     return post;
+  }
+
+  public async createNewPost(data: CreatePostDto, author: AdminEntity) {
+    const subcategory = await this.PostAdminFactory.findSubCategory(
+      data.subcategory,
+    );
+    if (!subcategory)
+      throw new NotFoundException('not found any subcategory with this Id');
+
+    const slug = await this.generateSlug(data.title);
+    let galleries: string[];
+
+    if (data.gallery) {
+      galleries = data.gallery.map((data) => {
+        return data.fullPath;
+      });
+    } else {
+      galleries = [];
+    }
+
+    const newPost = this.Post_Repository.create({
+      title: data.title,
+      tags: data.tags,
+      thumbnail: data.thumbnail[0],
+      description: data.description,
+      gallery: galleries,
+      subcategory: subcategory,
+      slug: slug,
+      author: author,
+    });
+
+    return await this.Post_Repository.save(newPost);
   }
 }
