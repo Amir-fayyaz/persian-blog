@@ -7,9 +7,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { PostReportEntity } from './postReport.entity';
 
 @Entity('post')
 export class PostEntity {
@@ -45,7 +47,6 @@ export class PostEntity {
   tags: string[];
 
   // reloations
-  // @ApiProperty()
   @ManyToOne(() => subCategoryEntity, (subcategory) => subcategory.posts, {
     onDelete: 'CASCADE',
   })
@@ -54,9 +55,12 @@ export class PostEntity {
 
   @ManyToOne(() => AdminEntity, (admin) => admin.posts)
   @JoinColumn({ name: 'author' })
-  // @ApiProperty()
   author: AdminEntity;
 
+  @OneToMany(() => PostReportEntity, (postReport) => postReport.post)
+  postReports: PostReportEntity[];
+
+  //timeStamps
   @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
