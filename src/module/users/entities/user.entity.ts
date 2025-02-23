@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from '../contracts/userRole.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -44,4 +46,6 @@ export class UserEntity {
   updatedAt: Date;
 
   // relations..
+  @OneToMany(() => PostReportEntity, (postReport) => postReport.user)
+  postReports: PostReportEntity[];
 }
