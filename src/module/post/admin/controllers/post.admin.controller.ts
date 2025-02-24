@@ -13,7 +13,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PostAdminService } from '../services/post.admin.service';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { PostEntity } from '../../entities/post.entity';
 import { PostSorting } from '../../enums/Post.sorting.enum';
 import { Admin } from 'src/common/decorators/getAdmin.decorator';
@@ -121,5 +121,11 @@ export class PostAdminController {
     @Admin() admin: AdminEntity,
   ) {
     return await this.PostAdminService.createNewPost(createPostDto, admin);
+  }
+
+  @Get('/author/:id')
+  @HttpCode(HttpStatus.OK)
+  async getPostByAuthor(@Param('id', ParseIntPipe) id: number) {
+    return await this.PostAdminService.getPostsForAuthor(id);
   }
 }
