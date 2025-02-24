@@ -11,7 +11,6 @@ import { PaginationTool } from 'src/common/utils/pagination.util';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostAdminFactory } from '../post.admin.factory';
-import { ImageDetailsDto } from '../dto/image.dto';
 import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
 
 @Injectable()
@@ -164,6 +163,9 @@ export class PostAdminService {
     if (posts.length < 1)
       throw new NotFoundException('No post related to this author');
 
-    return { posts };
+    return {
+      authorId,
+      posts,
+    };
   }
 }
