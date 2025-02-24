@@ -131,6 +131,13 @@ export class PostAdminController {
   }
 
   @Get('/author/:id')
+  @ApiOperation({
+    summary: 'for get post of special author',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'author id',
+  })
   @HttpCode(HttpStatus.OK)
   async getPostByAuthor(@Param('id', ParseIntPipe) id: number) {
     return await this.PostAdminService.getPostsForAuthor(id);
