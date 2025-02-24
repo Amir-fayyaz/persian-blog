@@ -9,6 +9,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import { Admin } from 'src/common/decorators/getAdmin.decorator';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 import { CreatePostDto } from '../dto/create-post.dto';
+import { UpdatePostDto } from '../dto/update-post.dto';
 
 @UseGuards(AdminGuard)
 @Controller('api/v1/admin/posts')
@@ -130,6 +132,7 @@ export class PostAdminController {
     return await this.PostAdminService.createNewPost(createPostDto, admin);
   }
 
+  //GET -
   @Get('/author/:id')
   @ApiOperation({
     summary: 'for get post of special author',
@@ -141,5 +144,16 @@ export class PostAdminController {
   @HttpCode(HttpStatus.OK)
   async getPostByAuthor(@Param('id', ParseIntPipe) id: number) {
     return await this.PostAdminService.getPostsForAuthor(id);
+  }
+
+  //PUT -
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  async updatePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePostDto: UpdatePostDto,
+    @Admin() author: AdminEntity,
+  ) {
+    return await this.PostAdminService.updatePost(id, author.id, updatePostDto);
   }
 }
