@@ -16,7 +16,27 @@ export class PostReportService {
   public async findAllReports() {
     const [reports, totalCount] = await this.Post_Repository.find({
       order: { createdAt: 'DESC' },
-      relations: ['user', 'post', ''],
+      relations: ['user', 'post', 'post.subcategory'],
+      select: {
+        user: {
+          id: true,
+          name: true,
+          mobile: true,
+        },
+        post: {
+          id: true,
+          description: true,
+          title: true,
+          slug: true,
+          createdAt: true,
+          subcategory: { id: true, title: true },
+        },
+      },
     });
+
+    return {
+      reports,
+      totalCount,
+    };
   }
 }
