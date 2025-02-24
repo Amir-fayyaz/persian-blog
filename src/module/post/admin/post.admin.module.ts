@@ -12,6 +12,7 @@ import { SubCategoryAdminService } from 'src/module/catogory/admin/services/subC
 import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
 import { CategoryAdminService } from 'src/module/catogory/admin/services/category.admin.service';
 import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
+import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
     SubCategoryAdminService,
     CategoryAdminService,
     JwtService,
+    ImageAdminService,
   ],
 })
 export class PostAdminModule {}
