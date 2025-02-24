@@ -13,6 +13,8 @@ import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.enti
 import { CategoryAdminService } from 'src/module/catogory/admin/services/category.admin.service';
 import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
 import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
+import { PostReportController } from './controllers/post-report.admin.controller';
+import { PostReportService } from './services/post-report.admin.service';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
       CategoryEntity,
     ]),
   ],
-  controllers: [PostAdminController],
+  controllers: [PostAdminController, PostReportController],
   providers: [
     PostAdminService,
     PostAdminFactory,
@@ -33,6 +35,7 @@ import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
     CategoryAdminService,
     JwtService,
     ImageAdminService,
+    PostReportService,
   ],
 })
 export class PostAdminModule {}
