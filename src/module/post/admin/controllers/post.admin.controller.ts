@@ -14,7 +14,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PostAdminService } from '../services/post.admin.service';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { PostEntity } from '../../entities/post.entity';
 import { PostSorting } from '../../enums/Post.sorting.enum';
 import { Admin } from 'src/common/decorators/getAdmin.decorator';
@@ -23,6 +29,7 @@ import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 
+@ApiBearerAuth()
 @UseGuards(AdminGuard)
 @Controller('api/v1/admin/posts')
 export class PostAdminController {
@@ -148,12 +155,27 @@ export class PostAdminController {
 
   //PUT -
   @Put(':id')
+  @ApiOperation({
+    summary: 'api for update post information',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'PostId of you want to update',
+  })
+  @ApiBody({
+    description: 'required fields to update post',
+    type: UpdatePostDto,
+  })
   @HttpCode(HttpStatus.OK)
   async updatePost(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) PostId: number,
     @Body() updatePostDto: UpdatePostDto,
     @Admin() author: AdminEntity,
   ) {
-    return await this.PostAdminService.updatePost(id, author.id, updatePostDto);
+    return await this.PostAdminService.updatePost(
+      PostId,
+      author.id,
+      updatePostDto,
+    );
   }
 }
