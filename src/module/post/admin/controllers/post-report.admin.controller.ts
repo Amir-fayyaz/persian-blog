@@ -1,4 +1,12 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { PostReportService } from '../services/post-report.admin.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
@@ -14,5 +22,11 @@ export class PostReportController {
   })
   async getReports() {
     return await this.PostReportService.findAllReports();
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async deleteReport(@Param('id', ParseIntPipe) id: number) {
+    return await this.PostReportService.deleteReport(id);
   }
 }
