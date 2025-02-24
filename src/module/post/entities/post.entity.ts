@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PostReportEntity } from './postReport.entity';
+import { PostImageType } from '../types/PostImage.type';
 
 @Entity('post')
 export class PostEntity {
@@ -27,12 +28,12 @@ export class PostEntity {
   description: string;
 
   @ApiProperty()
-  @Column({ type: 'varchar' })
-  thumbnail: string;
+  @Column({ type: 'json' })
+  thumbnail: PostImageType;
 
   @ApiProperty()
   @Column({ type: 'json' })
-  gallery: string[];
+  gallery: PostImageType[];
 
   @ApiProperty()
   @Column({ type: 'varchar' })
