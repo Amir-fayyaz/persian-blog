@@ -164,6 +164,6 @@ export class PostAdminService {
     if (posts.length < 1)
       throw new NotFoundException('No post related to this author');
 
-    return posts;
+    return { posts };
   }
 }
