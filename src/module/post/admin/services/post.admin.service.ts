@@ -11,6 +11,8 @@ import { PaginationTool } from 'src/common/utils/pagination.util';
 import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostAdminFactory } from '../post.admin.factory';
+import { ImageDetailsDto } from '../dto/image.dto';
+import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
 
 @Injectable()
 export class PostAdminService {
@@ -18,7 +20,10 @@ export class PostAdminService {
     @InjectRepository(PostEntity)
     private readonly Post_Repository: Repository<PostEntity>,
     private readonly PostAdminFactory: PostAdminFactory,
+    private readonly ImageService: ImageAdminService,
   ) {}
+
+  private readonly Dir = 'static/uploads/post/';
 
   //private method
   private async generateSlug(title: string): Promise<string> {
@@ -36,6 +41,19 @@ export class PostAdminService {
     }
 
     return slug;
+  }
+
+  //!
+  private async deletePostImages(thumbnail?: string, gallery?: string[]) {
+    if (thumbnail) {
+      await this.ImageService.deleteFile(this.Dir + thumbnail);
+      return true;
+    } else {
+      for (const imagePath of gallery) {
+        await this.ImageService.deleteFile(this.Dir + imagePath);
+      }
+      return true;
+    }
   }
 
   //public method
@@ -83,17 +101,19 @@ export class PostAdminService {
       where: {
         id: postId,
       },
+      relations: ['author'],
     });
 
     if (!post) throw new NotFoundException('There is no post with this id');
 
     //? this admin is owner of this post ?
-    if (post && post.author.id !== AdminId)
+    if (post && Number(post.author.id) !== AdminId)
       throw new ForbiddenException(
         'Access denied , this post is not related to you',
       );
 
     // method for delete PostImages
+    await this.deletePostImages(post.thumbnail, post.gallery);
 
     await this.Post_Repository.remove(post);
 
