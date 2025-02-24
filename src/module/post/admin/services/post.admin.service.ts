@@ -12,6 +12,8 @@ import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostAdminFactory } from '../post.admin.factory';
 import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
+import { UpdatePostDto } from '../dto/update-post.dto';
+import { ImageDetailsDto } from '../dto/image.dto';
 
 @Injectable()
 export class PostAdminService {
@@ -43,7 +45,10 @@ export class PostAdminService {
   }
 
   //!
-  private async deletePostImages(thumbnail?: string, gallery?: string[]) {
+  private async deletePostImages(
+    thumbnail?: ImageDetailsDto,
+    gallery?: ImageDetailsDto[],
+  ) {
     if (thumbnail) {
       await this.ImageService.deleteFile(this.Dir + thumbnail);
       return true;
@@ -120,6 +125,7 @@ export class PostAdminService {
   }
 
   public async createNewPost(data: CreatePostDto, author: AdminEntity) {
+    console.log(data);
     const subcategory = await this.PostAdminFactory.findSubCategory(
       data.subcategory,
     );
@@ -127,11 +133,11 @@ export class PostAdminService {
       throw new NotFoundException('not found any subcategory with this Id');
 
     const slug = await this.generateSlug(data.title);
-    let galleries: string[];
+    let galleries: ImageDetailsDto[];
 
     if (data.gallery) {
       galleries = data.gallery.map((data) => {
-        return data.fullPath;
+        return data;
       });
     } else {
       galleries = [];
@@ -142,7 +148,7 @@ export class PostAdminService {
       tags: data.tags,
       thumbnail: data.thumbnail[0],
       description: data.description,
-      gallery: galleries,
+      gallery: data.gallery,
       subcategory: subcategory,
       slug: slug,
       author: author,
@@ -167,5 +173,27 @@ export class PostAdminService {
       authorId,
       posts,
     };
+  }
+
+  public async updatePost(
+    postId: number,
+    authorId: number,
+    data: UpdatePostDto,
+  ) {
+    const updateResult = await this.Post_Repository.update(
+      { id: postId, author: { id: authorId } },
+      {
+        title: data.title,
+        tags: data.tags,
+        thumbnail: data.thumbnail[0],
+        description: data.description,
+        gallery: data.gallery,
+      },
+    );
+
+    if (updateResult.affected === 0)
+      throw new NotFoundException('No post with this id');
+
+    return { success: true };
   }
 }
