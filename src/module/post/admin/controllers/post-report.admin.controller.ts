@@ -8,7 +8,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { PostReportService } from '../services/post-report.admin.service';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller('api/v1/admin/post-reports')
@@ -25,6 +25,13 @@ export class PostReportController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: 'delete special post-report',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'id of post-report record',
+  })
   @HttpCode(HttpStatus.OK)
   async deleteReport(@Param('id', ParseIntPipe) id: number) {
     return await this.PostReportService.deleteReport(id);
