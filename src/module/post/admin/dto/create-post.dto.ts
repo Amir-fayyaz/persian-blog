@@ -75,7 +75,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   @IsInt()
   @ApiProperty({
-    type: String,
+    type: Number,
     required: true,
     description: 'subcategory id for relation post',
   })

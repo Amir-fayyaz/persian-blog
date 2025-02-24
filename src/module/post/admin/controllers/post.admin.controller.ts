@@ -115,6 +115,13 @@ export class PostAdminController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: 'for create newPost',
+  })
+  @ApiBody({
+    description: 'required fields for create new Post',
+    type: CreatePostDto,
+  })
   @HttpCode(HttpStatus.CREATED)
   async createPost(
     @Body() createPostDto: CreatePostDto,
