@@ -151,4 +151,19 @@ export class PostAdminService {
 
     return await this.Post_Repository.save(newPost);
   }
+
+  public async getPostsForAuthor(authorId: number) {
+    const posts = await this.Post_Repository.find({
+      where: {
+        author: { id: authorId },
+      },
+      order: { createdAt: 'DESC' },
+      relations: ['author', 'subcategory', 'subcategory.category'],
+    });
+
+    if (posts.length < 1)
+      throw new NotFoundException('No post related to this author');
+
+    return posts;
+  }
 }
