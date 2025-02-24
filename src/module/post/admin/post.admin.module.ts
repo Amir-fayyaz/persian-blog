@@ -15,6 +15,7 @@ import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
 import { ImageAdminService } from 'src/module/image/admin/image.admin.service';
 import { PostReportController } from './controllers/post-report.admin.controller';
 import { PostReportService } from './services/post-report.admin.service';
+import { PostReportEntity } from '../entities/postReport.entity';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PostReportService } from './services/post-report.admin.service';
       AdminEntity,
       subCategoryEntity,
       CategoryEntity,
+      PostReportEntity,
     ]),
   ],
   controllers: [PostAdminController, PostReportController],
