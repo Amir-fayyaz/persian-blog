@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostReportEntity } from '../../entities/postReport.entity';
 import { Repository } from 'typeorm';
@@ -38,5 +38,19 @@ export class PostReportService {
       reports,
       totalCount,
     };
+  }
+
+  public async deleteReport(reportId: number) {
+    const report = await this.Post_Repository.findOne({
+      where: {
+        id: reportId,
+      },
+    });
+
+    if (!report) throw new NotFoundException('There is no report with this id');
+
+    await this.Post_Repository.remove(report);
+
+    return { success: true };
   }
 }
