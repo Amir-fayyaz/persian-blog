@@ -9,6 +9,7 @@ import {
 import { UserRole } from '../contracts/userRole.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
+import { LikeEntity } from 'src/module/post/entities/like.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -48,4 +49,7 @@ export class UserEntity {
   // relations..
   @OneToMany(() => PostReportEntity, (postReport) => postReport.user)
   postReports: PostReportEntity[];
+
+  @OneToMany(() => LikeEntity, (like) => like.user)
+  likes: LikeEntity[];
 }

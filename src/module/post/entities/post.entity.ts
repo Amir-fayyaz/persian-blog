@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { PostReportEntity } from './postReport.entity';
 import { PostImageType } from '../types/PostImage.type';
+import { LikeEntity } from './like.entity';
 
 @Entity('post')
 export class PostEntity {
@@ -60,6 +61,9 @@ export class PostEntity {
 
   @OneToMany(() => PostReportEntity, (postReport) => postReport.post)
   postReports: PostReportEntity[];
+
+  @OneToMany(() => LikeEntity, (like) => like.post)
+  likes: LikeEntity[];
 
   //timeStamps
   @ApiProperty()
