@@ -10,6 +10,7 @@ import { UserEntity } from 'src/module/users/entities/user.entity';
 import { LikeEntity } from '../entities/like.entity';
 import { LikeClientController } from './controllers/like.client.controller';
 import { LikeClientService } from './services/like.client.service';
+import { PostClientFactory } from './post.client.factory';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity, UserEntity, LikeEntity])],
@@ -20,6 +21,7 @@ import { LikeClientService } from './services/like.client.service';
     UserAdminFactory,
     UserAdminService,
     LikeClientService,
+    PostClientFactory,
   ],
 })
 export class PostClientModule {}
