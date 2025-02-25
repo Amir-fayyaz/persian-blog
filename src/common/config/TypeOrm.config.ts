@@ -5,6 +5,7 @@ import { AdminEntity } from 'src/module/auth/entities/admin.entity';
 import { OtpEntity } from 'src/module/auth/entities/otp.entity';
 import { CategoryEntity } from 'src/module/catogory/entities/category.entity';
 import { subCategoryEntity } from 'src/module/catogory/entities/subCategory.entity';
+import { LikeEntity } from 'src/module/post/entities/like.entity';
 import { PostEntity } from 'src/module/post/entities/post.entity';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
@@ -28,6 +29,7 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
     subCategoryEntity,
     PostEntity,
     PostReportEntity,
+    LikeEntity,
   ],
   synchronize: true,
 };
