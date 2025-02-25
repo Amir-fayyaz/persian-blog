@@ -7,15 +7,19 @@ import { JwtService } from '@nestjs/jwt';
 import { UserAdminFactory } from 'src/module/users/admin/user.admin.factory';
 import { UserAdminService } from 'src/module/users/admin/user.admin.service';
 import { UserEntity } from 'src/module/users/entities/user.entity';
+import { LikeEntity } from '../entities/like.entity';
+import { LikeClientController } from './controllers/like.client.controller';
+import { LikeClientService } from './services/like.client.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PostEntity, UserEntity])],
-  controllers: [PostClientController],
+  imports: [TypeOrmModule.forFeature([PostEntity, UserEntity, LikeEntity])],
+  controllers: [PostClientController, LikeClientController],
   providers: [
     PostClientService,
     JwtService,
     UserAdminFactory,
     UserAdminService,
+    LikeClientService,
   ],
 })
 export class PostClientModule {}
