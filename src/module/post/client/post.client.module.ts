@@ -13,9 +13,17 @@ import { LikeClientService } from './services/like.client.service';
 import { PostClientFactory } from './post.client.factory';
 import { CommentClientService } from './services/comment.client.service';
 import { CommentClientController } from './controllers/comment.client.controller';
+import { CommentEntity } from '../entities/comment.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PostEntity, UserEntity, LikeEntity])],
+  imports: [
+    TypeOrmModule.forFeature([
+      PostEntity,
+      UserEntity,
+      LikeEntity,
+      CommentEntity,
+    ]),
+  ],
   controllers: [
     PostClientController,
     LikeClientController,
