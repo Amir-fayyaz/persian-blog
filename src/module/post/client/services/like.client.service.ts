@@ -76,4 +76,32 @@ export class LikeClientService {
       };
     }
   }
+
+  // For export
+  public async getUserLikes(user: UserEntity) {
+    const userLikes = await this.Like_Repository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+      relations: ['user', 'post'],
+      select: {
+        id: true,
+        createdAt: true,
+        user: {
+          id: true,
+        },
+        post: {
+          id: true,
+        },
+      },
+    });
+
+    if (userLikes.length < 1) {
+      throw new NotFoundException('User did not like any post');
+    }
+
+    return userLikes;
+  }
 }
