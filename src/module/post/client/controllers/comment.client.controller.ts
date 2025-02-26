@@ -24,6 +24,7 @@ import { UserGuard } from 'src/module/auth/guards/user.guard';
 import { CreateCommentDto } from '../dto/create-Comment.dto';
 import { User } from 'src/common/decorators/getUser.decorator';
 import { UserEntity } from 'src/module/users/entities/user.entity';
+import { CreateReplyDto } from '../dto/create-Reply.dto';
 
 @ApiTags('client-comment')
 @UseGuards(UserGuard)
@@ -90,5 +91,32 @@ export class CommentClientController {
     @Param('id', ParseIntPipe) postId: number,
   ) {
     return await this.CommentService.getPostComments(page, postId);
+  }
+
+  //POST -
+  @Post('reply/:id')
+  @ApiOperation({
+    summary: 'For create reply to comment',
+  })
+  @ApiBody({
+    type: CreateCommentDto,
+    description: 'required fields for create new reply',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'comment-id',
+    type: Number,
+  })
+  @HttpCode(HttpStatus.CREATED)
+  async createReply(
+    @Body() createReplyDto: CreateReplyDto,
+    @Param('id', ParseIntPipe) commentId: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.CommentService.createReply(
+      createReplyDto,
+      commentId,
+      user,
+    );
   }
 }
