@@ -1,16 +1,25 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CommentClientService } from '../services/comment.client.service';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserGuard } from 'src/module/auth/guards/user.guard';
 import { CreateCommentDto } from '../dto/create-Comment.dto';
 import { User } from 'src/common/decorators/getUser.decorator';
@@ -22,6 +31,7 @@ import { UserEntity } from 'src/module/users/entities/user.entity';
 export class CommentClientController {
   constructor(private readonly CommentService: CommentClientService) {}
 
+  //POST -
   @Post(':id')
   @ApiOperation({
     summary: 'for add a newComment',
@@ -48,6 +58,7 @@ export class CommentClientController {
     );
   }
 
+  //DELETE -
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -59,5 +70,25 @@ export class CommentClientController {
     @User() user: UserEntity,
   ) {
     return await this.CommentService.deleteComment(commentId, +user.id);
+  }
+
+  //GET -
+  @Get(':id')
+  @ApiOperation({
+    summary: 'For fetch all comments of special post',
+  })
+  @ApiParam({ name: 'id', description: 'post-id', type: Number })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    description: 'page For pagination',
+    default: 1,
+  })
+  @HttpCode(HttpStatus.OK)
+  async getPostComments(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Param('id', ParseIntPipe) postId: number,
+  ) {
+    return await this.CommentService.getPostComments(page, postId);
   }
 }
