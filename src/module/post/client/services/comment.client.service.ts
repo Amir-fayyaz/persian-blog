@@ -6,6 +6,7 @@ import { PostClientFactory } from '../post.client.factory';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 import { CreateCommentDto } from '../dto/create-Comment.dto';
 import { PaginationTool } from 'src/common/utils/pagination.util';
+import { CreateReplyDto } from '../dto/create-Reply.dto';
 
 @Injectable()
 export class CommentClientService {
@@ -90,5 +91,26 @@ export class CommentClientService {
       totalCount: comments.length,
       comments,
     };
+  }
+
+  public async createReply(
+    data: CreateReplyDto,
+    commentId: number,
+    user: UserEntity,
+  ) {
+    const comment = await this.Comment_Repository.findOne({
+      where: { id: commentId },
+    });
+
+    if (!comment)
+      throw new NotFoundException('There is no comment with this id');
+
+    const newReply = await this.Comment_Repository.create({
+      ...data,
+      user,
+      parent: comment,
+    });
+
+    return await this.Comment_Repository.save(newReply);
   }
 }
