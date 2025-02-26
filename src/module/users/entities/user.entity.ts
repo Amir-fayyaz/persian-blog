@@ -10,6 +10,7 @@ import { UserRole } from '../contracts/userRole.enum';
 import { ApiProperty } from '@nestjs/swagger';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 import { LikeEntity } from 'src/module/post/entities/like.entity';
+import { CommentEntity } from 'src/module/post/entities/comment.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -52,4 +53,7 @@ export class UserEntity {
 
   @OneToMany(() => LikeEntity, (like) => like.user)
   likes: LikeEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.user)
+  comments: CommentEntity[];
 }

@@ -14,6 +14,7 @@ import {
 import { PostReportEntity } from './postReport.entity';
 import { PostImageType } from '../types/PostImage.type';
 import { LikeEntity } from './like.entity';
+import { CommentEntity } from './comment.entity';
 
 @Entity('post')
 export class PostEntity {
@@ -64,6 +65,9 @@ export class PostEntity {
 
   @OneToMany(() => LikeEntity, (like) => like.post)
   likes: LikeEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments: CommentEntity[];
 
   //timeStamps
   @ApiProperty()
