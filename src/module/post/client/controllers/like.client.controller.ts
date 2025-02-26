@@ -33,6 +33,14 @@ export class LikeClientController {
   }
 
   @Post(':id')
+  @ApiOperation({
+    summary: 'For likeOrDisLike one post',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'PostId',
+    required: true,
+  })
   @HttpCode(HttpStatus.CREATED)
   async LikeOrDisLikePost(
     @Param('id', ParseIntPipe) postId: number,
