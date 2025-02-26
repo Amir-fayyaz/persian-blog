@@ -11,8 +11,9 @@ import { PostReportClientService } from '../services/post-report.client.service'
 import { User } from 'src/common/decorators/getUser.decorator';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 import { UserGuard } from 'src/module/auth/guards/user.guard';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('client-postReport')
 @UseGuards(UserGuard)
 @Controller('api/v1/client/post-report')
 export class PostReportClientController {
