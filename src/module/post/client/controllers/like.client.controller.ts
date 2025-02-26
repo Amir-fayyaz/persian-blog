@@ -5,10 +5,16 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { LikeClientService } from '../services/like.client.service';
 import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { User } from 'src/common/decorators/getUser.decorator';
+import { UserEntity } from 'src/module/users/entities/user.entity';
+import { UserGuard } from 'src/module/auth/guards/user.guard';
 
+@UseGuards(UserGuard)
 @Controller('api/v1/client/likes')
 export class LikeClientController {
   constructor(private readonly LikeService: LikeClientService) {}
@@ -24,5 +30,14 @@ export class LikeClientController {
   @HttpCode(HttpStatus.OK)
   async getLikeForPost(@Param('id', ParseIntPipe) postId: number) {
     return await this.LikeService.getLikesForPost(postId);
+  }
+
+  @Post(':id')
+  @HttpCode(HttpStatus.CREATED)
+  async LikeOrDisLikePost(
+    @Param('id', ParseIntPipe) postId: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.LikeService.LikeAndDislikePost(postId, user);
   }
 }
