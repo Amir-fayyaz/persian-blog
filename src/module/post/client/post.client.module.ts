@@ -14,6 +14,9 @@ import { PostClientFactory } from './post.client.factory';
 import { CommentClientService } from './services/comment.client.service';
 import { CommentClientController } from './controllers/comment.client.controller';
 import { CommentEntity } from '../entities/comment.entity';
+import { PostReportClientController } from './controllers/post-report.client.controller';
+import { PostReportClientService } from './services/post-report.client.service';
+import { PostReportEntity } from '../entities/postReport.entity';
 
 @Module({
   imports: [
@@ -22,12 +25,14 @@ import { CommentEntity } from '../entities/comment.entity';
       UserEntity,
       LikeEntity,
       CommentEntity,
+      PostReportEntity,
     ]),
   ],
   controllers: [
     PostClientController,
     LikeClientController,
     CommentClientController,
+    PostReportClientController,
   ],
   providers: [
     PostClientService,
@@ -37,6 +42,7 @@ import { CommentEntity } from '../entities/comment.entity';
     LikeClientService,
     PostClientFactory,
     CommentClientService,
+    PostReportClientService,
   ],
 })
 export class PostClientModule {}
