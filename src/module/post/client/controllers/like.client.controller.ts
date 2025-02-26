@@ -19,6 +19,7 @@ import { UserGuard } from 'src/module/auth/guards/user.guard';
 export class LikeClientController {
   constructor(private readonly LikeService: LikeClientService) {}
 
+  //GET -
   @Get(':id')
   @ApiOperation({
     summary: 'for get all likes of special post',
@@ -32,6 +33,7 @@ export class LikeClientController {
     return await this.LikeService.getLikesForPost(postId);
   }
 
+  //POST -
   @Post(':id')
   @ApiOperation({
     summary: 'For likeOrDisLike one post',
@@ -47,5 +49,14 @@ export class LikeClientController {
     @User() user: UserEntity,
   ) {
     return await this.LikeService.LikeAndDislikePost(postId, user);
+  }
+
+  @Get()
+  @ApiOperation({
+    summary: 'for get all posts that user liked',
+  })
+  @HttpCode(HttpStatus.OK)
+  async getPostsLikedByUser(@User() user: UserEntity) {
+    return await this.LikeService.getUserLikes(user);
   }
 }
