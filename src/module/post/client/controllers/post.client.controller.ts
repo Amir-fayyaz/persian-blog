@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -54,5 +55,14 @@ export class PostClientController {
   @HttpCode(HttpStatus.OK)
   async getPostBySlug(@Param('slug') slug: string) {
     return await this.PostClientService.findPostBySlug(slug);
+  }
+
+  //PUT -
+  @Put(':id')
+  @ApiOperation({ summary: 'For update post-view' })
+  @ApiParam({ name: 'id', description: 'post-id', type: Number })
+  @HttpCode(HttpStatus.OK)
+  async InsertPostView(@Param('id', ParseIntPipe) postId: number) {
+    return await this.PostClientService.updatePostView(postId);
   }
 }
