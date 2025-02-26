@@ -40,4 +40,13 @@ export class PostClientService {
       posts,
     };
   }
+
+  //export methods
+  public async FindPostById(postId: number): Promise<PostEntity> {
+    return await this.Post_Repository.findOne({
+      where: {
+        id: postId,
+      },
+    });
+  }
 }

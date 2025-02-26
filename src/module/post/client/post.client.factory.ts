@@ -10,6 +10,6 @@ export class PostClientFactory {
   }
 
   public async FindPostById(postId: number) {
-    return await this.FindPost.findPostById(postId);
+    return await this.FindPost.FindPostById(postId);
   }
 }
