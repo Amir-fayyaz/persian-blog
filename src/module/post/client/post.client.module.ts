@@ -11,10 +11,16 @@ import { LikeEntity } from '../entities/like.entity';
 import { LikeClientController } from './controllers/like.client.controller';
 import { LikeClientService } from './services/like.client.service';
 import { PostClientFactory } from './post.client.factory';
+import { CommentClientService } from './services/comment.client.service';
+import { CommentClientController } from './controllers/comment.client.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity, UserEntity, LikeEntity])],
-  controllers: [PostClientController, LikeClientController],
+  controllers: [
+    PostClientController,
+    LikeClientController,
+    CommentClientController,
+  ],
   providers: [
     PostClientService,
     JwtService,
@@ -22,6 +28,7 @@ import { PostClientFactory } from './post.client.factory';
     UserAdminService,
     LikeClientService,
     PostClientFactory,
+    CommentClientService,
   ],
 })
 export class PostClientModule {}
