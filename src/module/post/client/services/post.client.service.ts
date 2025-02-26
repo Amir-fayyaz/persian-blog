@@ -68,6 +68,19 @@ export class PostClientService {
     return { post };
   }
 
+  public async updatePostView(postId: number) {
+    const result = await this.Post_Repository.createQueryBuilder()
+      .update('post')
+      .set({ views: () => 'views + 1' })
+      .where('id = :postId', { postId })
+      .execute();
+
+    if (result.affected === 0)
+      throw new NotFoundException('There is no post with this id');
+
+    return { success: true };
+  }
+
   //export methods
   public async FindPostById(postId: number): Promise<PostEntity> {
     return await this.Post_Repository.findOne({
