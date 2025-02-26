@@ -4,13 +4,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostClientService } from '../services/post.client.service';
 import { PostSorting } from '../../enums/Post.sorting.enum';
-import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { UserGuard } from 'src/module/auth/guards/user.guard';
 
+@ApiTags('client-post')
+@UseGuards(UserGuard)
 @Controller('api/v1/client/posts')
 export class PostClientController {
   constructor(private readonly PostClientService: PostClientService) {}
@@ -40,5 +45,14 @@ export class PostClientController {
     SortingBy: PostSorting,
   ) {
     return await this.PostClientService.getPosts(page, SortingBy);
+  }
+
+  //GET
+  @Get(':slug')
+  @ApiOperation({ summary: 'Find post by slug' })
+  @ApiParam({ name: 'slug', type: String, description: 'slug of post' })
+  @HttpCode(HttpStatus.OK)
+  async getPostBySlug(@Param('slug') slug: string) {
+    return await this.PostClientService.findPostBySlug(slug);
   }
 }
