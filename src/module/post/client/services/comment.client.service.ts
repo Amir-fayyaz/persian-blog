@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { PostClientFactory } from '../post.client.factory';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 import { CreateCommentDto } from '../dto/create-Comment.dto';
+import { PaginationTool } from 'src/common/utils/pagination.util';
 
 @Injectable()
 export class CommentClientService {
@@ -51,6 +52,43 @@ export class CommentClientService {
 
     return {
       success: true,
+    };
+  }
+
+  public async getPostComments(page: number, postId: number) {
+    const pagination = PaginationTool({ page, take: 20 });
+
+    const post = await this.PostClientFactory.FindPostById(postId);
+
+    if (!post) throw new NotFoundException('There is no post with this id');
+
+    const [comments] = await this.Comment_Repository.findAndCount({
+      where: {
+        post: {
+          id: postId,
+        },
+      },
+      relations: ['user', 'replies', 'replies.user'],
+      order: { createdAt: 'DESC' },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        createdAt: true,
+
+        user: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+      take: pagination.take,
+      skip: pagination.skip,
+    });
+
+    return {
+      totalCount: comments.length,
+      comments,
     };
   }
 }
