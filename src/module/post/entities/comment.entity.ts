@@ -31,6 +31,7 @@ export class CommentEntity {
   post: PostEntity;
 
   @ManyToOne(() => CommentEntity, (comment) => comment.replies)
+  @JoinColumn({ name: 'parent' })
   parent: CommentEntity;
 
   @OneToMany(() => CommentEntity, (comment) => comment.parent)
