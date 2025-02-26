@@ -43,7 +43,7 @@ export class CommentClientService {
       },
     });
 
-    if (!this.deleteComment) {
+    if (!comment) {
       throw new NotFoundException('There is no comment with this id');
     }
 
