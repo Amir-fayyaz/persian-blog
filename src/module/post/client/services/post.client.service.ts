@@ -41,6 +41,33 @@ export class PostClientService {
     };
   }
 
+  public async findPostBySlug(slug: string) {
+    const post = await this.Post_Repository.createQueryBuilder('post')
+      .where('post.slug =:slug', { slug })
+      .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('post.subcategory', 'subcategory')
+      .leftJoinAndSelect('subcategory.category', 'category')
+      .leftJoinAndSelect('post.likes', 'likes')
+      .leftJoinAndSelect('likes.user', 'user')
+      .loadRelationCountAndMap('post.likesCount', 'post.likes')
+      .select([
+        'post',
+        'author.username',
+        'author.email',
+        'author.isSuperAdmin',
+        'author.createdAt',
+        'author.id',
+        'likes.id',
+        'likes.createdAt',
+        'user.id',
+      ])
+      .getOne();
+
+    if (!post) throw new NotFoundException('There is no post with this slug');
+
+    return { post };
+  }
+
   //export methods
   public async FindPostById(postId: number): Promise<PostEntity> {
     return await this.Post_Repository.findOne({
