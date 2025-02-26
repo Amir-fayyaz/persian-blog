@@ -34,4 +34,23 @@ export class CommentClientService {
 
     return await this.Comment_Repository.save(newComment);
   }
+
+  public async deleteComment(commentId: number, userId: number) {
+    const comment = await this.Comment_Repository.findOne({
+      where: {
+        id: commentId,
+        user: { id: userId },
+      },
+    });
+
+    if (!this.deleteComment) {
+      throw new NotFoundException('There is no comment with this id');
+    }
+
+    await this.Comment_Repository.remove(comment);
+
+    return {
+      success: true,
+    };
+  }
 }
