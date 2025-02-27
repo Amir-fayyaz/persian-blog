@@ -9,12 +9,12 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { UserClientService } from './user.client.service';
 import { User } from 'src/common/decorators/getUser.decorator';
-import { UserEntity } from '../entities/user.entity';
-import { EditUserClientDto } from './dto/editUser.client.dto';
 import { UserGuard } from 'src/module/auth/guards/user.guard';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { UserEntity } from '../../entities/user.entity';
+import { UserClientService } from '../services/user.client.service';
+import { EditUserClientDto } from '../dto/editUser.client.dto';
 
 @Controller('users/client')
 export class UserClientController {
