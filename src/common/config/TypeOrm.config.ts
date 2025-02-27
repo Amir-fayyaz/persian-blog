@@ -9,6 +9,7 @@ import { CommentEntity } from 'src/module/post/entities/comment.entity';
 import { LikeEntity } from 'src/module/post/entities/like.entity';
 import { PostEntity } from 'src/module/post/entities/post.entity';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
+import { NotificationEntity } from 'src/module/users/entities/notification.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 
 config();
@@ -32,6 +33,7 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
     PostReportEntity,
     LikeEntity,
     CommentEntity,
+    NotificationEntity,
   ],
   synchronize: true,
 };
