@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   HttpCode,
   HttpStatus,
   Param,
@@ -35,5 +36,21 @@ export class PostReportClientController {
     @User() user: UserEntity,
   ) {
     return await this.PostReportService.createPostReport(postId, user);
+  }
+
+  //DELETE -
+  @Delete(':id')
+  @ApiOperation({ summary: 'For delete report' })
+  @ApiParam({
+    name: 'id',
+    description: 'post-id you want to delete report',
+    type: Number,
+  })
+  @HttpCode(HttpStatus.OK)
+  async deletePostReport(
+    @Param('id', ParseIntPipe) postId: number,
+    @User() user: UserEntity,
+  ) {
+    return await this.PostReportService.deletePostReport(postId, user);
   }
 }
