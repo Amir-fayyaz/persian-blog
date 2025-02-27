@@ -11,6 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 import { LikeEntity } from 'src/module/post/entities/like.entity';
 import { CommentEntity } from 'src/module/post/entities/comment.entity';
+import { NotificationEntity } from './notification.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -56,4 +57,7 @@ export class UserEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
+
+  @OneToMany(() => NotificationEntity, (notification) => notification.user)
+  notifications: NotificationEntity[];
 }
