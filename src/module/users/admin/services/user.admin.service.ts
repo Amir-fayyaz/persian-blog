@@ -1,14 +1,9 @@
-import {
-  HttpException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../entities/user.entity';
+import { PaginationTool } from 'src/common/utils/pagination.util';
 import { CreateUserAdminDto } from '../dto/createUser.admin.dto';
-import { UpdateUserAdminDto } from '../dto/updateUser.admin.dto';
 
 @Injectable()
 export class UserAdminService {
@@ -18,8 +13,14 @@ export class UserAdminService {
   ) {}
 
   // public routes
-  public async getAllUsers(): Promise<UserEntity[]> {
-    return await this.User_Repository.find();
+  public async getAllUsers(page: number): Promise<UserEntity[]> {
+    const pagination = PaginationTool({ page, take: 20 });
+
+    return await this.User_Repository.find({
+      order: { createdAt: 'DESC' },
+      skip: pagination.skip,
+      take: pagination.take,
+    });
   }
 
   public async getUserById(id: number): Promise<UserEntity> {
@@ -36,6 +37,7 @@ export class UserAdminService {
     return user;
   }
 
+  // export methods
   public async createUser(data: CreateUserAdminDto): Promise<UserEntity> {
     //? Is there any acount with this phone-number
     const user = await this.User_Repository.findOne({
@@ -59,57 +61,6 @@ export class UserAdminService {
       throw new HttpException(error.message, 400);
     }
   }
-
-  public async updateUser(id: number, data: UpdateUserAdminDto) {
-    const user = await this.User_Repository.findOne({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!user) {
-      throw new NotFoundException('There is no acount with this id');
-    }
-
-    if (user && Number(user.id) !== id) {
-      throw new HttpException('There is another acount with this info', 400);
-    }
-
-    try {
-      await this.User_Repository.update(id, {
-        ...data,
-      });
-
-      return {
-        id,
-        data,
-      };
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
-  }
-
-  public async deleteUser(id: number): Promise<number> {
-    const user = await this.User_Repository.findOne({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!user) {
-      throw new NotFoundException('There is no acount with this id');
-    }
-
-    try {
-      await this.User_Repository.remove(user);
-
-      return id;
-    } catch (error) {
-      throw new InternalServerErrorException(error.message);
-    }
-  }
-
-  //Private routes
 
   public async getUserByPhoneNumber(
     mobile: string,

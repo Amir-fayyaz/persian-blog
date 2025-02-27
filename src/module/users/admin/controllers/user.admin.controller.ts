@@ -1,21 +1,26 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
   Put,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserAdminService } from '../services/user.admin.service';
 import { CreateUserAdminDto } from '../dto/createUser.admin.dto';
 import { UpdateUserAdminDto } from '../dto/updateUser.admin.dto';
 import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../../entities/user.entity';
+import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 
 @ApiBearerAuth()
 @ApiTags('admin-user')
+@UseGuards(AdminGuard)
 @Controller('api/v1/admin/user')
 export class UserAdminController {
   constructor(private readonly UserAdminService: UserAdminService) {}
@@ -26,8 +31,10 @@ export class UserAdminController {
     description: 'recive all users',
     type: UserEntity,
   })
-  async getUsers() {
-    return await this.UserAdminService.getAllUsers();
+  async getUsers(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+  ) {
+    return await this.UserAdminService.getAllUsers(page);
   }
 
   @Get(':id')
@@ -36,49 +43,5 @@ export class UserAdminController {
   @ApiResponse({ status: 404, description: 'user not found' })
   async findUserById(@Param('id', ParseIntPipe) id: number) {
     return await this.UserAdminService.getUserById(+id);
-  }
-
-  @Post()
-  @ApiResponse({
-    status: 200,
-    description: 'user created successfully',
-    type: UserEntity,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'There is acount with this phone-number before',
-  })
-  async createUser(@Body() data: CreateUserAdminDto) {
-    return await this.UserAdminService.createUser(data);
-  }
-
-  @Put(':id')
-  @ApiParam({ name: 'id', description: 'userId of user ' })
-  @ApiResponse({
-    status: 200,
-    description: 'info updated successfully & return id & data',
-  })
-  @ApiResponse({ status: 404, description: 'user not found' })
-  @ApiResponse({
-    status: 400,
-    description: 'There is another acount with this phone-number',
-  })
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: UpdateUserAdminDto,
-  ) {
-    return await this.UserAdminService.updateUser(+id, data);
-  }
-
-  @Delete(':id')
-  @ApiParam({ name: 'id', description: 'userId of user ' })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  @ApiResponse({
-    status: 200,
-    description: 'User deleted successfully & return id',
-  })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    return await this.UserAdminService.deleteUser(+id);
   }
 }
