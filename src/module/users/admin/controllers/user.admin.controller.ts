@@ -8,11 +8,11 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UserAdminService } from './user.admin.service';
-import { CreateUserAdminDto } from './dto/createUser.admin.dto';
-import { UpdateUserAdminDto } from './dto/updateUser.admin.dto';
+import { UserAdminService } from '../services/user.admin.service';
+import { CreateUserAdminDto } from '../dto/createUser.admin.dto';
+import { UpdateUserAdminDto } from '../dto/updateUser.admin.dto';
 import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../../entities/user.entity';
 
 @ApiBearerAuth()
 @ApiTags('admin/user')

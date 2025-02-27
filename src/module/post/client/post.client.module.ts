@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostEntity } from '../entities/post.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserAdminFactory } from 'src/module/users/admin/user.admin.factory';
-import { UserAdminService } from 'src/module/users/admin/user.admin.service';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 import { LikeEntity } from '../entities/like.entity';
 import { LikeClientController } from './controllers/like.client.controller';
@@ -17,6 +16,7 @@ import { CommentEntity } from '../entities/comment.entity';
 import { PostReportClientController } from './controllers/post-report.client.controller';
 import { PostReportClientService } from './services/post-report.client.service';
 import { PostReportEntity } from '../entities/postReport.entity';
+import { UserAdminService } from 'src/module/users/admin/services/user.admin.service';
 
 @Module({
   imports: [

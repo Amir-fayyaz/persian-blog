@@ -5,7 +5,7 @@ import { UserClientService } from './user.client.service';
 import { UserClientController } from './user.client.controller';
 import { JwtService } from '@nestjs/jwt';
 import { UserAdminFactory } from '../admin/user.admin.factory';
-import { UserAdminService } from '../admin/user.admin.service';
+import { UserAdminService } from '../admin/services/user.admin.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],

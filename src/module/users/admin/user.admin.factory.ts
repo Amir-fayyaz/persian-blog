@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { UserAdminService } from './user.admin.service';
 import { IGetUserByPhoneNumber } from '../interface/IFindUserByMobile.type';
+import { UserAdminService } from './services/user.admin.service';
 
 @Injectable()
 export class UserAdminFactory {

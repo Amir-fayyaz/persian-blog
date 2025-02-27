@@ -5,10 +5,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserAdminDto } from './dto/createUser.admin.dto';
-import { UpdateUserAdminDto } from './dto/updateUser.admin.dto';
+import { UserEntity } from '../../entities/user.entity';
+import { CreateUserAdminDto } from '../dto/createUser.admin.dto';
+import { UpdateUserAdminDto } from '../dto/updateUser.admin.dto';
 
 @Injectable()
 export class UserAdminService {

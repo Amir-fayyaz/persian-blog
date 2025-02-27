@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ICreateUser } from './interface/ICreateUser.interface';
-import { UserAdminService } from 'src/module/users/admin/user.admin.service';
 import { CreateUserAdminDto } from 'src/module/users/admin/dto/createUser.admin.dto';
 import { IFindUserByMobile } from './interface/IFindUser.interface';
+import { UserAdminService } from 'src/module/users/admin/services/user.admin.service';
 
 @Injectable()
 export class AuthClientFactory {
