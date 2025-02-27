@@ -2,18 +2,13 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
-  Delete,
   Get,
   Param,
   ParseIntPipe,
-  Post,
-  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UserAdminService } from '../services/user.admin.service';
-import { CreateUserAdminDto } from '../dto/createUser.admin.dto';
-import { UpdateUserAdminDto } from '../dto/updateUser.admin.dto';
 import { ApiBearerAuth, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from '../../entities/user.entity';
 import { AdminGuard } from 'src/module/auth/guards/admin.guard';
