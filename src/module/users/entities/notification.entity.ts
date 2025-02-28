@@ -1,9 +1,11 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { ImageDetailsDto } from 'src/module/post/admin/dto/image.dto';
@@ -28,4 +30,10 @@ export class NotificationEntity {
   @ManyToOne(() => UserEntity, (user) => user.notifications)
   @JoinColumn({ name: 'user' })
   user: UserEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
