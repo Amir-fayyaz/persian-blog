@@ -8,6 +8,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { PostModule } from '../post/post.module';
 import { ImageModule } from '../image/image.module';
 import { SubscriptionModule } from '../subscription/subscription.module';
+import { PaymentModule } from 'src/payment/payment.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SubscriptionModule } from '../subscription/subscription.module';
     PostModule,
     ImageModule,
     SubscriptionModule,
+    PaymentModule,
   ],
   controllers: [],
   providers: [],
