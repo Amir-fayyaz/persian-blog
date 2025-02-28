@@ -31,4 +31,17 @@ export class NotificationClientService {
       notifications,
     };
   }
+
+  public async getNotificationById(id: number) {
+    const notification = await this.Notification_Repository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!notification)
+      throw new NotFoundException('There is no notification with this id');
+
+    return notification;
+  }
 }
