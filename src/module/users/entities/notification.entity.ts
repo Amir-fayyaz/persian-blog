@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { ImageDetailsDto } from 'src/module/post/admin/dto/image.dto';
 
 @Entity('notification')
 export class NotificationEntity {
@@ -18,8 +19,8 @@ export class NotificationEntity {
   @Column({ type: 'text', nullable: false })
   description: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  thumbnail: { position: number; fullPath: string };
+  @Column({ type: 'json', nullable: true })
+  thumbnail: /*{ position: number; fullPath: string };*/ ImageDetailsDto;
 
   @Column({ type: 'boolean', default: false })
   SeenStatus: Boolean;
