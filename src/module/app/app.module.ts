@@ -7,6 +7,7 @@ import { CategoryModule } from '../catogory/category.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { PostModule } from '../post/post.module';
 import { ImageModule } from '../image/image.module';
+import { SubscriptionModule } from '../subscription/subscription.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ImageModule } from '../image/image.module';
     CategoryModule,
     PostModule,
     ImageModule,
+    SubscriptionModule,
   ],
   controllers: [],
   providers: [],
