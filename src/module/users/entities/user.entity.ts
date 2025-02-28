@@ -12,6 +12,7 @@ import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
 import { LikeEntity } from 'src/module/post/entities/like.entity';
 import { CommentEntity } from 'src/module/post/entities/comment.entity';
 import { NotificationEntity } from './notification.entity';
+import { PaymentEntity } from 'src/module/payment/entities/payment.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -60,4 +61,7 @@ export class UserEntity {
 
   @OneToMany(() => NotificationEntity, (notification) => notification.user)
   notifications: NotificationEntity[];
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.user)
+  payments: PaymentEntity[];
 }
