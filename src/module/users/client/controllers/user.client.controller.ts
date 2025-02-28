@@ -11,17 +11,27 @@ import {
 } from '@nestjs/common';
 import { User } from 'src/common/decorators/getUser.decorator';
 import { UserGuard } from 'src/module/auth/guards/user.guard';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserEntity } from '../../entities/user.entity';
 import { UserClientService } from '../services/user.client.service';
 import { EditUserClientDto } from '../dto/editUser.client.dto';
 
-@Controller('users/client')
+@ApiTags('client-users')
+@ApiBearerAuth()
+@UseGuards(UserGuard)
+@Controller('api/v1/client/users')
 export class UserClientController {
   constructor(private readonly UserClientService: UserClientService) {}
 
   //GET -
-  @Get('profile')
+  @Get('Me')
   @UseGuards(UserGuard)
   @ApiOperation({
     summary: 'get client profile',
@@ -49,7 +59,7 @@ export class UserClientController {
   }
 
   //PUT -
-  @Put('profile/:id')
+  @Put('Me/:id')
   @UseGuards(UserGuard)
   @ApiOperation({
     summary: 'edit profile of client',
@@ -96,7 +106,7 @@ export class UserClientController {
   }
 
   //DELETE -
-  @Delete('profile')
+  @Delete('Me')
   @UseGuards(UserGuard)
   @ApiOperation({
     summary: 'Delete-Acount for client',
