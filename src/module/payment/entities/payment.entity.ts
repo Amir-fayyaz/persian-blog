@@ -1,3 +1,4 @@
+import { SubscriptionEntity } from 'src/module/subscription/entities/subscription.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 import {
   Column,
@@ -24,6 +25,10 @@ export class PaymentEntity {
   @ManyToOne(() => UserEntity, (user) => user.payments, { cascade: true })
   @JoinColumn({ name: 'user' })
   user: UserEntity;
+
+  @ManyToOne(() => SubscriptionEntity, (subscription) => subscription.payments)
+  @JoinColumn({ name: 'plan' })
+  plan: SubscriptionEntity;
 
   @CreateDateColumn()
   createdAt: Date;

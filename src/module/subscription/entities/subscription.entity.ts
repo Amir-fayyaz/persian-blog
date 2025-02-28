@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserSubscriptionEntity } from './user-subscription.entity';
+import { PaymentEntity } from 'src/module/payment/entities/payment.entity';
 
 @Entity('subscription')
 export class SubscriptionEntity {
@@ -29,6 +30,8 @@ export class SubscriptionEntity {
   )
   Usersubscriptions: UserSubscriptionEntity[];
 
+  @OneToMany(() => PaymentEntity, (payment) => payment.plan)
+  payments: PaymentEntity[];
   @CreateDateColumn()
   createdAt: Date;
 
