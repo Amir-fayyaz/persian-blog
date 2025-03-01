@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SubscriptionEntity } from '../../entities/subscription.entity';
 import { Repository } from 'typeorm';
 import { PaginationTool } from 'src/common/utils/pagination.util';
+import { CreateSubscriptionDto } from '../dto/create-subscription.dto';
 
 @Injectable()
 export class SubscriptionAdminService {
@@ -28,5 +29,11 @@ export class SubscriptionAdminService {
       subscriptions,
       count: subscriptions.length,
     };
+  }
+
+  public async createSubscription(data: CreateSubscriptionDto) {
+    const newSubscription = await this.Subscription_Repository.create(data);
+
+    return await this.Subscription_Repository.save(newSubscription);
   }
 }
