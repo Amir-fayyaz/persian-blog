@@ -10,11 +10,21 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SubscriptionAdminService } from '../services/subscription.admin.service';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateSubscriptionDto } from '../dto/create-subscription.dto';
+import { AdminGuard } from 'src/module/auth/guards/admin.guard';
 
+@ApiTags('admin-subscription')
+@UseGuards(AdminGuard)
 @Controller('api/v1/admin/subscriptions')
 export class SubscriptionAdminController {
   constructor(private readonly SubscriptionService: SubscriptionAdminService) {}
