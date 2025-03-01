@@ -10,6 +10,8 @@ import { CommentEntity } from 'src/module/post/entities/comment.entity';
 import { LikeEntity } from 'src/module/post/entities/like.entity';
 import { PostEntity } from 'src/module/post/entities/post.entity';
 import { PostReportEntity } from 'src/module/post/entities/postReport.entity';
+import { SubscriptionEntity } from 'src/module/subscription/entities/subscription.entity';
+import { UserSubscriptionEntity } from 'src/module/subscription/entities/user-subscription.entity';
 import { NotificationEntity } from 'src/module/users/entities/notification.entity';
 import { UserEntity } from 'src/module/users/entities/user.entity';
 
@@ -36,6 +38,8 @@ export const TypeOrmConfig: TypeOrmModuleOptions = {
     CommentEntity,
     NotificationEntity,
     PaymentEntity,
+    SubscriptionEntity,
+    UserSubscriptionEntity,
   ],
   synchronize: true,
 };
