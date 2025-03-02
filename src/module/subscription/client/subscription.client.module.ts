@@ -7,12 +7,22 @@ import { JwtService } from '@nestjs/jwt';
 import { UserAdminFactory } from 'src/module/users/admin/user.admin.factory';
 import { UserAdminService } from 'src/module/users/admin/services/user.admin.service';
 import { UserEntity } from 'src/module/users/entities/user.entity';
+import { UserSubscriptionClientController } from './controllers/user-subscription.client.controller';
+import { UserSubscriptionClientService } from './services/user-subscription.client.service';
+import { UserSubscriptionEntity } from '../entities/user-subscription.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SubscriptionEntity, UserEntity])],
-  controllers: [SubscriptionClientController],
+  imports: [
+    TypeOrmModule.forFeature([
+      SubscriptionEntity,
+      UserEntity,
+      UserSubscriptionEntity,
+    ]),
+  ],
+  controllers: [SubscriptionClientController, UserSubscriptionClientController],
   providers: [
     SubscriptionClientService,
+    UserSubscriptionClientService,
     JwtService,
     UserAdminFactory,
     UserAdminService,
