@@ -29,4 +29,13 @@ export class SubscriptionClientService {
       count: subscriptions.length,
     };
   }
+
+  //exports method
+  public async getSubscriptionById(id: number) {
+    return await this.Subscription_Repository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }
